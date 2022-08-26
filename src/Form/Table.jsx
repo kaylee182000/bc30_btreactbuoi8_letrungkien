@@ -2,46 +2,102 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 class Table extends Component {
+  searchName = (e) => {
+    const action = {
+      type: "SEARCH_NAME",
+      payload: {
+        value: e.target.value,
+      },
+    };
+    this.props.dispatch(action);
+  };
   renderItem = () => {
-    let {mangSinhVien} = this.props.QLSVreducer
-    if(mangSinhVien.length === 0){
-      return (
-        <tr className="text-center">
-          <td>__</td>
-          <td>__</td>
-          <td>__</td>
-          <td>__</td>
-          <td>__</td>
-        </tr>
-      )
-    }else {
-      return mangSinhVien.map((sv) => {
+    let { mangSinhVien, arrSvSearch } = this.props.QLSVreducer;
+    if (arrSvSearch.length === 0) {
+      if (mangSinhVien.length === 0) {
+        return (
+          <tr className="text-center">
+            <td>__</td>
+            <td>__</td>
+            <td>__</td>
+            <td>__</td>
+            <td>__</td>
+          </tr>
+        );
+      } else {
+        return mangSinhVien.map((sv) => {
+          return (
+            <tr key={sv.id} className="text-center">
+              <td>{sv.id}</td>
+              <td>{sv.name}</td>
+              <td>{sv.tel}</td>
+              <td>{sv.email}</td>
+              <td>
+                <button
+                  className="btn btn-danger mx-2"
+                  onClick={() => {
+                    const action = {
+                      type: "XOA_SINH_VIEN",
+                      payload: {
+                        id: sv.id,
+                      },
+                    };
+                    this.props.dispatch(action);
+                  }}
+                >
+                  Xoa
+                </button>
+                <button className="btn btn-primary mx-2">Sua</button>
+              </td>
+            </tr>
+          );
+        });
+      }
+    } else {
+      return arrSvSearch.map((sv) => {
         return (
           <tr key={sv.id} className="text-center">
             <td>{sv.id}</td>
             <td>{sv.name}</td>
             <td>{sv.tel}</td>
             <td>{sv.email}</td>
-            <td>
-              <button className="btn btn-danger mx-2" onClick={() => {
-                const action = {
-                  type: "XOA_SINH_VIEN",
-                  payload : {
-                    id: sv.id
-                  }
-                }
-                this.props.dispatch(action)
-              }}>Xoa</button>
+            {/* <td>
+              <button
+                className="btn btn-danger mx-2"
+                onClick={() => {
+                  const action = {
+                    type: "XOA_SINH_VIEN",
+                    payload: {
+                      id: sv.id,
+                    },
+                  };
+                  this.props.dispatch(action);
+                }}
+              >
+                Xoa
+              </button>
               <button className="btn btn-primary mx-2">Sua</button>
-            </td>
+            </td> */}
           </tr>
         );
-      })
+      });
     }
-  }
+  };
   render() {
     return (
       <div>
+        <form>
+          <div className="form-group">
+            <input
+              type="text"
+              id="searchName"
+              pattern="^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]+"
+              className="form-control mb-3"
+              placeholder="Search Name..."
+              onChange={this.searchName}
+            />
+          </div>
+        </form>
         <table className="table">
           <thead>
             <tr className="text-center bg-dark text-white">
@@ -52,9 +108,7 @@ class Table extends Component {
               <th></th>
             </tr>
           </thead>
-          <tbody>
-            {this.renderItem()}
-          </tbody>
+          <tbody>{this.renderItem()}</tbody>
         </table>
       </div>
     );
@@ -62,9 +116,9 @@ class Table extends Component {
 }
 
 const mapStateToProps = (state) => {
-    return {
-        QLSVreducer: state.QLSVreducer
-    }
-}
+  return {
+    QLSVreducer: state.QLSVreducer,
+  };
+};
 
 export default connect(mapStateToProps)(Table);
