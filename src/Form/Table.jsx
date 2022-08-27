@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 class Table extends Component {
-  searchName = (e) => {
+  MSSV = (e) => {
     const action = {
-      type: "SEARCH_NAME",
+      type: "SEARCH_ID",
       payload: {
         value: e.target.value,
       },
@@ -25,9 +25,9 @@ class Table extends Component {
           </tr>
         );
       } else {
-        return mangSinhVien.map((sv) => {
+        return mangSinhVien.map((sv,index) => {
           return (
-            <tr key={sv.id} className="text-center">
+            <tr key={index} className="text-center">
               <td>{sv.id}</td>
               <td>{sv.name}</td>
               <td>{sv.tel}</td>
@@ -54,9 +54,9 @@ class Table extends Component {
         });
       }
     } else {
-      return arrSvSearch.map((sv) => {
+      return arrSvSearch.map((sv,index) => {
         return (
-          <tr key={sv.id} className="text-center">
+          <tr key={index} className="text-center">
             <td>{sv.id}</td>
             <td>{sv.name}</td>
             <td>{sv.tel}</td>
@@ -90,11 +90,10 @@ class Table extends Component {
           <div className="form-group">
             <input
               type="text"
-              id="searchName"
-              pattern="^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]+"
+              id="MSSV"
               className="form-control mb-3"
-              placeholder="Search Name..."
-              onChange={this.searchName}
+              placeholder="Find MSSV"
+              onChange={this.MSSV}
             />
           </div>
         </form>

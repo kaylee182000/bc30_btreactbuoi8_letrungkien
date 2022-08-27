@@ -34,17 +34,16 @@ export const QLSVreducer = (state = stateDefault, action) => {
           otherID = "Email";
           break;
       }
+      const regrex = new RegExp(pattern);
       // kiểm tra rỗng
       if (value === "") {
         errorMess = otherID + " không được để trống!";
+      } else if (!regrex.test(value)) {
+        errorMess = otherID + " không hợp lệ!";
       }
       //kiem tra trung id
 
       // kiểm tra pattern
-      const regrex = new RegExp(pattern)
-      if (!regrex.test(value)) {
-        errorMess = otherID + " không hợp lệ!";
-      }
       state.errors[id] = errorMess;
       state.svInfo[id] = value;
       state.errors = { ...state.errors };
@@ -69,14 +68,11 @@ export const QLSVreducer = (state = stateDefault, action) => {
       state.mangSinhVien = svUpdate;
       return { ...state };
     }
-    case "SEARCH_NAME": {
+    case "SEARCH_ID": {
       let { value } = action.payload;
 
-      value = value.trim().toLowerCase();
       let arrSvUpdate = [...state.mangSinhVien];
-      arrSvUpdate = arrSvUpdate.filter((sv) =>
-        sv.name.trim().toLowerCase().includes(value)
-      );
+      arrSvUpdate = arrSvUpdate.filter((sv) => sv.id.includes(value));
 
       state.arrSvSearch = arrSvUpdate;
       return { ...state };
